@@ -2,6 +2,64 @@
 session_start();
 require_once 'db.php';
 
+function is_fetch_request() {
+    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
+        (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $student_id = $_SESSION['user_id'] ?? null;
+    $timeslot_id = $_POST['timeslot_id'] ?? '';
+
+    if (!$student_id || !$timeslot_id) {
+        if (is_fetch_request()) {
+            http_response_code(400);
+            echo 'Пожалуйста, выберите слот.';
+        } else {
+            echo 'Пожалуйста, выберите слот.';
+        }
+        exit();
+    }
+
+    // Проверка: не записан ли уже студент на этот слот
+    $stmt = $conn->prepare('SELECT 1 FROM Student_Choice WHERE Student_ID = ? AND Timeslot_ID = ?');
+    $stmt->bind_param('ii', $student_id, $timeslot_id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        if (is_fetch_request()) {
+            http_response_code(409);
+            echo 'Вы уже записаны на этот слот.';
+        } else {
+            echo 'Вы уже записаны на этот слот.';
+        }
+        exit();
+    }
+    $stmt->close();
+
+    // Запись на слот
+    $stmt = $conn->prepare('INSERT INTO Student_Choice (Student_ID, Timeslot_ID) VALUES (?, ?)');
+    $stmt->bind_param('ii', $student_id, $timeslot_id);
+    $success = $stmt->execute();
+    $stmt->close();
+
+    if ($success) {
+        if (is_fetch_request()) {
+            echo 'Вы успешно записались на слот!';
+        } else {
+            echo 'Вы успешно записались на слот!';
+        }
+    } else {
+        if (is_fetch_request()) {
+            http_response_code(500);
+            echo 'Ошибка при записи на слот.';
+        } else {
+            echo 'Ошибка при записи на слот.';
+        }
+    }
+    exit();
+}
+
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

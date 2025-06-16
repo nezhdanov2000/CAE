@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Регистрация</h2>
-    <form action="register.php" method="post">
+    <form id="register-form">
         <label>Имя:</label><br>
         <input type="text" name="name" required><br>
 
@@ -31,14 +31,46 @@
 
         <input type="submit" value="Зарегистрироваться">
     </form>
+    <div id="register-message"></div>
     <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+
+
+    
     <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
         var pass = document.getElementById('password').value;
         var conf = document.getElementById('confirm_password').value;
+        const messageDiv = document.getElementById('register-message');
+        messageDiv.textContent = '';
         if (pass !== conf) {
-            alert('Пароли не совпадают!');
-            e.preventDefault();
+            messageDiv.textContent = 'Пароли не совпадают!';
+            messageDiv.style.color = 'red';
+            return;
+        }
+        const form = e.target;
+        const data = new FormData(form);
+        try {
+            const response = await fetch('register.php', {
+                method: 'POST',
+                body: data
+            });
+            const text = await response.text();
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+            if (text.includes('успешно') || text.includes('успешна')) {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'green';
+                setTimeout(() => window.location.href = 'login.html', 1500);
+            } else {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'red';
+            }
+        } catch (err) {
+            messageDiv.textContent = 'Ошибка при отправке запроса';
+            messageDiv.style.color = 'red';
         }
     });
     </script>

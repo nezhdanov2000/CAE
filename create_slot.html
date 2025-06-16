@@ -8,7 +8,7 @@
 <body>
     <h2>Создать свободный слот</h2>
 
-    <form action="create_slot.php" method="post">
+    <form id="create-slot-form">
         <label>Дата:</label><br>
         <input type="date" name="date" required><br>
 
@@ -21,8 +21,40 @@
         <label>Название курса:</label><br>
         <input type="text" name="course_name" required><br><br>
 
-        <input type="submit" value="Создать слот">
+        <input type="submit" value="Создать таймслот">
     </form>
+    <div id="slot-message"></div>
+
+    <a href="dashboard.html">Главное меню</a>
+    
+    <script>
+    document.getElementById('create-slot-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const messageDiv = document.getElementById('slot-message');
+        messageDiv.textContent = '';
+        try {
+            const response = await fetch('create_slot.php', {
+                method: 'POST',
+                body: data
+            });
+            const text = await response.text();
+            if (text.includes('успешно')) {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'green';
+                form.reset();
+            } else {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'red';
+            }
+        } catch (err) {
+            messageDiv.textContent = 'Ошибка при отправке запроса';
+            messageDiv.style.color = 'red';
+        }
+    });
+    </script>
+
 </body>
 </html>
 

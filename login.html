@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Вход</h2>
-    <form action="login.php" method="post">
+    <form id="login-form">
         <label>Email:</label><br>
         <input type="email" name="email" required><br>
 
@@ -22,6 +22,32 @@
 
         <input type="submit" value="Войти">
     </form>
+    <div id="login-message"></div>
     <p>Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a></p>
+    <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const messageDiv = document.getElementById('login-message');
+        messageDiv.textContent = '';
+        try {
+            const response = await fetch('login.php', {
+                method: 'POST',
+                body: data
+            });
+            const text = await response.text();
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+            messageDiv.textContent = text;
+            messageDiv.style.color = 'red';
+        } catch (err) {
+            messageDiv.textContent = 'Ошибка при отправке запроса';
+            messageDiv.style.color = 'red';
+        }
+    });
+    </script>
 </body>
 </html>
