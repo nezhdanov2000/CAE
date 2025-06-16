@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои таймслоты и студенты</title>
+</head>
+<body>
+    <h1>Мои таймслоты и количество студентов</h1>
+    <div id="appointments-container">
+        <table id="appointments-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Время начала</th>
+                    <th>Время окончания</th>
+                    <th>Количество студентов</th>
+                </tr>
+            </thead>
+            <tbody id="appointments-body"></tbody>
+        </table>
+        <div id="error-message" style="display: none;"></div>
+        <div id="no-appointments" style="display: none;">
+            У вас пока нет созданных таймслотов с записанными студентами.
+        </div>
+    </div>
+    <script>
+        fetch('dashboard.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.role !== 'tutor') {
+                    window.location.href = 'dashboard.html';
+                }
+            })
+            .catch(error => {
+                document.getElementById('error-message').textContent = 'Ошибка при проверке прав доступа';
+                document.getElementById('error-message').style.display = 'block';
+            });
+        fetch('my_appointments.php')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(slots => {
+                const table = document.getElementById('appointments-table');
+                const tbody = document.getElementById('appointments-body');
+                const noAppointments = document.getElementById('no-appointments');
+                if (!slots || slots.length === 0) {
+                    noAppointments.style.display = 'block';
+                    return;
+                }
+                slots.forEach(slot => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${slot.Date}</td>
+                        <td>${slot.Start_Time}</td>
+                        <td>${slot.End_Time}</td>
+                        <td>${slot.Student_Count}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                table.style.display = 'table';
+            })
+            .catch(error => {
+                document.getElementById('error-message').textContent = 'Ошибка при загрузке данных';
+                document.getElementById('error-message').style.display = 'block';
+            });
+    </script>
+</body>
+</html> 
