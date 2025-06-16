@@ -15,7 +15,13 @@
         <input type="text" name="surname" required><br>
 
         <label>Пароль:</label><br>
-        <input type="password" name="password" required><br>
+        <input type="password" name="password" id="password" required><br>
+
+        <label>Подтвердите пароль:</label><br>
+        <input type="password" name="confirm_password" id="confirm_password" required><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br>
 
         <label>Вы:</label><br>
         <select name="role" required>
@@ -26,5 +32,15 @@
         <input type="submit" value="Зарегистрироваться">
     </form>
     <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        var pass = document.getElementById('password').value;
+        var conf = document.getElementById('confirm_password').value;
+        if (pass !== conf) {
+            alert('Пароли не совпадают!');
+            e.preventDefault();
+        }
+    });
+    </script>
 </body>
 </html>

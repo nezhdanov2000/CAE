@@ -1,6 +1,7 @@
 -- Студенты
 CREATE TABLE Student (
     Student_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Email VARCHAR(100) UNIQUE,
     Password VARCHAR(100),
     Name VARCHAR(100),
     Surname VARCHAR(100)
@@ -15,6 +16,7 @@ CREATE TABLE Course (
 -- Преподаватели
 CREATE TABLE Tutor (
     Tutor_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Email VARCHAR(100) UNIQUE,
     Password VARCHAR(100),
     Name VARCHAR(100),
     Surname VARCHAR(100),
@@ -40,12 +42,14 @@ CREATE TABLE Tutoring (
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 );
 
--- Таймслоты
+-- Таймслоты (привязаны к курсу)
 CREATE TABLE Timeslot (
     Timeslot_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Course_ID INT,
     Date DATE,
-    Day_of_week VARCHAR(20),
-    Time TIME
+    Start_Time TIME,
+    End_Time TIME,
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 );
 
 -- Преподаватель создает таймслот
@@ -66,13 +70,13 @@ CREATE TABLE Student_Choice (
     FOREIGN KEY (Timeslot_ID) REFERENCES Timeslot(Timeslot_ID)
 );
 
--- Связь студентов с "группой" через Group_ID, где группа — абстрактный ID
+-- Студент участвует в "группе" с абстрактным ID
 CREATE TABLE Student_Join (
     Student_ID INT,
     Group_ID INT,
     PRIMARY KEY (Student_ID, Group_ID),
     FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID)
-    -- Group_ID без внешнего ключа — просто ID-группы
+    -- Group_ID — абстрактный, без внешнего ключа
 );
 
 -- Запись на занятие
@@ -84,5 +88,5 @@ CREATE TABLE Appointment (
     Location VARCHAR(100),
     FOREIGN KEY (Tutor_ID) REFERENCES Tutor(Tutor_ID),
     FOREIGN KEY (Timeslot_ID) REFERENCES Timeslot(Timeslot_ID)
-    -- Group_ID без внешнего ключа — потому что группы не храним явно
+    -- Group_ID — абстрактный, без внешнего ключа
 );
