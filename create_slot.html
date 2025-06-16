@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Создать свободный слот</h2>
+
+    <form action="create_slot.php" method="post">
+        <label>Дата:</label><br>
+        <input type="date" name="date" required><br>
+
+        <label>Время начала:</label><br>
+        <input type="time" name="start_time" required><br>
+
+        <label>Время окончания:</label><br>
+        <input type="time" name="end_time" required><br>
+
+        <label>Название курса:</label><br>
+        <input type="text" name="course_name" required><br><br>
+
+        <input type="submit" value="Создать слот">
+    </form>
+</body>
+</html>
+
+

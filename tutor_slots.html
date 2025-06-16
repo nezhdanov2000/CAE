@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои таймслоты</title>
+</head>
+<body>
+    <h2>Ваши таймслоты</h2>
+    <div id="slots">Загрузка...</div>
+
+    <script>
+        function loadSlots() {
+            fetch('tutor_slots.php')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('slots');
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        container.innerHTML = '<p>Нет созданных слотов</p>';
+                        return;
+                    }
+
+                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Курс</th><th></th></tr>';
+                    data.forEach(slot => {
+                        html += `<tr>
+                            <td>${slot.Date}</td>
+                            <td>${slot.Start_Time}</td>
+                            <td>${slot.End_Time}</td>
+                            <td>${slot.Course_name}</td>
+                            <td><button onclick="deleteSlot(${slot.Timeslot_ID})">Удалить</button></td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+
+                    container.innerHTML = html;
+                });
+        }
+
+        function deleteSlot(id) {
+            if (!confirm('Вы уверены, что хотите удалить этот слот?')) return;
+
+            fetch('delete_slot.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'timeslot_id=' + encodeURIComponent(id)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    loadSlots(); // перезагружаем таблицу
+                } else {
+                    alert('Ошибка удаления');
+                }
+            });
+        }
+
+        window.onload = loadSlots;
+    </script>
+</body>
+</html>

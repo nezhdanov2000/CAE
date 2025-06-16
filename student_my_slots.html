@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои записи</title>
+</head>
+<body>
+    <h2>Ваши записи на таймслоты</h2>
+    <div id="my-slots">Загрузка...</div>
+
+    <script>
+        function loadMySlots() {
+            fetch('student_my_slots.php')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('my-slots');
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        container.innerHTML = '<p>У вас нет записей.</p>';
+                        return;
+                    }
+
+                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Курс</th><th>Преподаватель</th><th></th></tr>';
+                    data.forEach(slot => {
+                        html += `<tr>
+                            <td>${slot.Date}</td>
+                            <td>${slot.Start_Time}</td>
+                            <td>${slot.End_Time}</td>
+                            <td>${slot.Course_name}</td>
+                            <td>${slot.Tutor_Name}</td>
+                            <td><button onclick="unenroll(${slot.Timeslot_ID})">Отменить</button></td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('my-slots').innerHTML = '<p>Ошибка загрузки</p>';
+                });
+        }
+
+        function unenroll(timeslotId) {
+            if (!confirm('Вы уверены, что хотите отменить запись?')) return;
+
+            fetch('student_unenroll.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'timeslot_id=' + encodeURIComponent(timeslotId)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    loadMySlots(); // обновить таблицу
+                } else {
+                    alert(response.error || 'Ошибка при отмене');
+                }
+            });
+        }
+
+        window.onload = loadMySlots;
+    </script>
+</body>
+</html>
