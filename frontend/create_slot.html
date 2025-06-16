@@ -35,7 +35,7 @@
         const messageDiv = document.getElementById('slot-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('create_slot.php', {
+            const response = await fetch('../backend/create_slot.php', {
                 method: 'POST',
                 body: data
             });
@@ -54,7 +54,6 @@
         }
     });
     </script>
-
 </body>
 </html>
 

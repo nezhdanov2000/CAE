@@ -12,7 +12,7 @@
 
     <script>
         function loadSlots() {
-            fetch('tutor_slots.php')
+            fetch('../backend/tutor_slots.php')
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById('slots');
@@ -41,7 +41,7 @@
         function deleteSlot(id) {
             if (!confirm('Вы уверены, что хотите удалить этот слот?')) return;
 
-            fetch('delete_slot.php', {
+            fetch('../backend/delete_slot.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'timeslot_id=' + encodeURIComponent(id)

@@ -21,11 +21,11 @@
         <a href="student_my_slots.html">Мои записи</a>
     </div>
 
-    <a href="logout.php">Выйти</a>
+    <a href="../backend/logout.php">Выйти</a>
 
     <script>
         // Fetch user data from the backend
-        fetch('dashboard.php')
+        fetch('../backend/dashboard.php')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('userName').textContent = data.name + ' ' + data.surname;

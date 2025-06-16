@@ -28,7 +28,7 @@
 
     
     <script>
-        fetch('dashboard.php')
+        fetch('../backend/dashboard.php')
             .then(response => response.json())
             .then(data => {
                 if (data.role !== 'tutor') {
@@ -39,7 +39,7 @@
                 document.getElementById('error-message').textContent = 'Ошибка при проверке прав доступа';
                 document.getElementById('error-message').style.display = 'block';
             });
-        fetch('my_appointments.php')
+        fetch('../backend/my_appointments.php')
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();

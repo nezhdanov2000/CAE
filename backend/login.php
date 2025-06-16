@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['name'] = $name;
                 $_SESSION['surname'] = $surname;
                 if (is_fetch_request()) {
-                    echo json_encode(['redirect' => 'dashboard.html']);
+                    echo json_encode(['redirect' => '../frontend/dashboard.html']);
                 } else {
-                    header('Location: dashboard.html');
+                    header('Location: ../frontend/dashboard.html');
                 }
                 exit();
             }
@@ -65,9 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['name'] = $name;
                 $_SESSION['surname'] = $surname;
                 if (is_fetch_request()) {
-                    echo json_encode(['redirect' => 'dashboard.html']);
+                    echo json_encode(['redirect' => '../frontend/dashboard.html']);
                 } else {
-                    header('Location: dashboard.html');
+                    header('Location: ../frontend/dashboard.html');
                 }
                 exit();
             }

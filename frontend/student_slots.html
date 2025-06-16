@@ -16,12 +16,13 @@
 
     <h2>Доступные таймслоты</h2>
     <div id="slots"></div>
-
+    <div id="enroll-message"></div>
+    
     <a href="dashboard.html">Главное меню</a>
-
+    
     <script>
         // Загрузим список курсов
-        fetch('courses.php')
+        fetch('../backend/courses.php')
             .then(res => res.json())
             .then(courses => {
                 const select = document.getElementById('course-select');
@@ -36,7 +37,7 @@
         document.getElementById('filter-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const courseId = document.getElementById('course-select').value;
-            fetch('tutors_slots.php?course_id=' + courseId)
+            fetch('../backend/student_slots.php?course_id=' + courseId)
                 .then(res => res.json())
                 .then(slots => {
                     const container = document.getElementById('slots');
@@ -45,19 +46,46 @@
                         return;
                     }
 
-                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Преподаватель</th></tr>';
+                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Преподаватель</th><th></th></tr>';
                     slots.forEach(slot => {
                         html += `<tr>
                             <td>${slot.Date}</td>
                             <td>${slot.Start_Time}</td>
                             <td>${slot.End_Time}</td>
                             <td>${slot.Tutor_Name}</td>
+                            <td><button onclick="enroll(${slot.Timeslot_ID})">Записаться</button></td>
                         </tr>`;
                     });
                     html += '</table>';
                     container.innerHTML = html;
                 });
         });
+
+        function enroll(timeslotId) {
+            const messageDiv = document.getElementById('enroll-message');
+            messageDiv.textContent = '';
+            const data = new FormData();
+            data.append('timeslot_id', timeslotId);
+            fetch('../backend/student_enroll.php', {
+                method: 'POST',
+                body: data
+            })
+            .then(response => response.text())
+            .then(text => {
+                if (text.includes('успешно')) {
+                    messageDiv.textContent = text;
+                    messageDiv.style.color = 'green';
+                    // Можно обновить список слотов или скрыть кнопку
+                } else {
+                    messageDiv.textContent = text;
+                    messageDiv.style.color = 'red';
+                }
+            })
+            .catch(() => {
+                messageDiv.textContent = 'Ошибка при отправке запроса';
+                messageDiv.style.color = 'red';
+            });
+        }
     </script>
 </body>
-</html> 
+</html>

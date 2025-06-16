@@ -51,7 +51,7 @@
         const form = e.target;
         const data = new FormData(form);
         try {
-            const response = await fetch('register.php', {
+            const response = await fetch('../backend/register.php', {
                 method: 'POST',
                 body: data
             });

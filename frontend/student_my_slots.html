@@ -12,7 +12,7 @@
 
     <script>
         function loadMySlots() {
-            fetch('student_my_slots.php')
+            fetch('../backend/student_my_slots.php')
                 .then(res => res.json())
                 .then(data => {
                     const container = document.getElementById('my-slots');
@@ -45,7 +45,7 @@
         function unenroll(timeslotId) {
             if (!confirm('Вы уверены, что хотите отменить запись?')) return;
 
-            fetch('student_unenroll.php', {
+            fetch('../backend/student_unenroll.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'timeslot_id=' + encodeURIComponent(timeslotId)
@@ -62,6 +62,5 @@
 
         window.onload = loadMySlots;
     </script>
-
 </body>
 </html>

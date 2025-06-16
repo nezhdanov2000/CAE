@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (is_fetch_request()) {
             echo '✅ Регистрация прошла успешно!';
         } else {
-            header('Location: login.html');
+            header('Location: ../frontend/login.html');
         }
     } else {
         if (is_fetch_request()) {

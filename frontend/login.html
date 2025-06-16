@@ -32,7 +32,7 @@
         const messageDiv = document.getElementById('login-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('login.php', {
+            const response = await fetch('../backend/login.php', {
                 method: 'POST',
                 body: data
             });
