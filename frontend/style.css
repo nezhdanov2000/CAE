@@ -53,11 +53,17 @@ label {
     margin-bottom: 6px;
     display: block;
 }
-input, select {
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+select {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 6px;
-    border: none;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     margin-bottom: 8px;
     font-size: 1rem;
 }
@@ -66,7 +72,7 @@ input[type="submit"], button[type="submit"], .btn {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 12px 0;
+    padding: 12px 20px;
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
@@ -196,6 +202,14 @@ button.delete:hover, button.cancel:hover {
         max-width: 98vw;
         padding: 18px 6vw;
     }
+    .panel.left {
+        margin: 0 auto;
+        margin-top: 50px;
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     table, th, td {
         font-size: 0.98rem;
     }
@@ -221,8 +235,13 @@ button.delete:hover, button.cancel:hover {
     padding: 28px 0 18px 0;
     text-align: center;
     border-bottom: 1px solid #333a47;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .sidebar-header img {
+    width: 150px;
+    height: 100px;
     margin-bottom: 8px;
 }
 .sidebar-header .user-name {
@@ -376,5 +395,24 @@ button.delete:hover, button.cancel:hover {
     .links-block a {
         padding: 10px 8vw;
         font-size: 1rem;
+    }
+}
+
+@media (min-width: 701px) {
+    .container {
+        flex-direction: row;
+    }
+    .panel {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+    .panel.center {
+        order: 1;
+    }
+    .panel.left {
+        order: 2;
+    }
+    .panel.right {
+        order: 3;
     }
 } 
