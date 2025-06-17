@@ -34,6 +34,21 @@ if ($res->num_rows === 0) {
 try {
     $conn->begin_transaction();
 
+    // Удаляем все записи студентов, выбравших этот таймслот
+    $stmt0 = $conn->prepare("DELETE FROM Student_Choice WHERE Timeslot_ID = ?");
+    $stmt0->bind_param("i", $timeslot_id);
+    $stmt0->execute();
+    if ($stmt0->error) throw new Exception($stmt0->error);
+    $stmt0->close();
+
+    // Также удалим связанные записи в Appointment, если они есть
+    $stmtA = $conn->prepare("DELETE FROM Appointment WHERE Timeslot_ID = ?");
+    $stmtA->bind_param("i", $timeslot_id);
+    $stmtA->execute();
+    if ($stmtA->error) throw new Exception($stmtA->error);
+    $stmtA->close();
+
+
     $stmt1 = $conn->prepare("DELETE FROM Tutor_Creates WHERE Timeslot_ID = ?");
     $stmt1->bind_param("i", $timeslot_id);
     $stmt1->execute();
