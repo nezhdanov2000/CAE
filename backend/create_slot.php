@@ -5,7 +5,7 @@ require_once 'db.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'tutor') {
-    die("❌ Доступ запрещён. Пожалуйста, войдите как преподаватель.");
+    die("❌ Access denied. Please login as a tutor.");
 }
 
 $tutor_id = $_SESSION['user_id'];
@@ -30,14 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$date || !$start_time || !$end_time || !$course_name || !$tutor_id) {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         } else {
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         }
         exit();
     }
 
-    // 1. Проверка: существует ли курс
+    // 1. Check if the course exists
     $stmt = $conn->prepare("SELECT Course_ID FROM Course WHERE Course_name = ?");
     $stmt->bind_param("s", $course_name);
     $stmt->execute();
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($row = $result->fetch_assoc()) {
         $course_id = $row['Course_ID'];
     } else {
-        // 2. Добавляем курс
+        // 2. Add the course
         $insert_course = $conn->prepare("INSERT INTO Course (Course_name) VALUES (?)");
         $insert_course->bind_param("s", $course_name);
         $insert_course->execute();
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $stmt->close();
 
-    // 3. Добавляем таймслот
+    // 3. Add the timeslot
     $stmt = $conn->prepare('INSERT INTO Timeslot (Date, Start_Time, End_Time, Course_ID) VALUES (?, ?, ?, ?)');
     $stmt->bind_param('sssi', $date, $start_time, $end_time, $course_id);
     $success = $stmt->execute();
@@ -63,31 +63,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($success) {
-        // 4. Связываем слот с преподавателем
+        // 4. Link the slot with the tutor
         $stmt2 = $conn->prepare('INSERT INTO Tutor_Creates (Tutor_ID, Timeslot_ID) VALUES (?, ?)');
         $stmt2->bind_param('ii', $tutor_id, $timeslot_id);
         $success2 = $stmt2->execute();
         $stmt2->close();
         if ($success2) {
             if (is_fetch_request()) {
-                echo 'Таймслот успешно создан!';
+                echo 'Timeslot successfully created!';
             } else {
-                echo 'Таймслот успешно создан!';
+                echo 'Timeslot successfully created!';
             }
         } else {
             if (is_fetch_request()) {
                 http_response_code(500);
-                echo 'Ошибка при привязке преподавателя.';
+                echo 'Error linking the tutor.';
             } else {
-                echo 'Ошибка при привязке преподавателя.';
+                echo 'Error linking the tutor.';
             }
         }
     } else {
         if (is_fetch_request()) {
             http_response_code(500);
-            echo 'Ошибка при создании таймслота.';
+            echo 'Error creating the timeslot.';
         } else {
-            echo 'Ошибка при создании таймслота.';
+            echo 'Error creating the timeslot.';
         }
     }
     exit();

@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мои таймслоты и студенты</title>
+    <title>My Timeslots and Students</title>
 </head>
 <body>
-    <h1>Мои таймслоты и количество студентов</h1>
+    <h1>My Timeslots and Student Count</h1>
     <div id="appointments-container">
         <table id="appointments-table" style="display: none;">
             <thead>
                 <tr>
-                    <th>Дата</th>
-                    <th>Время начала</th>
-                    <th>Время окончания</th>
-                    <th>Количество студентов</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Number of Students</th>
                 </tr>
             </thead>
             <tbody id="appointments-body"></tbody>
         </table>
         <div id="error-message" style="display: none;"></div>
         <div id="no-appointments" style="display: none;">
-            У вас пока нет созданных таймслотов с записанными студентами.
+            You have no created timeslots with enrolled students yet.
         </div>
     </div>
-    <a href="dashboard.html">Главное меню</a>
+    <a href="dashboard.html">Main Menu</a>
 
-    
     <script>
         fetch('../backend/dashboard.php')
             .then(response => response.json())
@@ -36,7 +35,7 @@
                 }
             })
             .catch(error => {
-                document.getElementById('error-message').textContent = 'Ошибка при проверке прав доступа';
+                document.getElementById('error-message').textContent = 'Access check error';
                 document.getElementById('error-message').style.display = 'block';
             });
         fetch('../backend/my_appointments.php')
@@ -65,7 +64,7 @@
                 table.style.display = 'table';
             })
             .catch(error => {
-                document.getElementById('error-message').textContent = 'Ошибка при загрузке данных';
+                document.getElementById('error-message').textContent = 'Error loading data';
                 document.getElementById('error-message').style.display = 'block';
             });
     </script>
