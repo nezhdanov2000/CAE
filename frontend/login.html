@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
+    <title>Login</title>
 </head>
 <body>
-    <h2>Вход</h2>
+    <h2>Login</h2>
     <form id="login-form">
         <label>Email:</label><br>
         <input type="email" name="email" required><br>
 
-        <label>Пароль:</label><br>
+        <label>Password:</label><br>
         <input type="password" name="password" required><br>
 
-        <label>Вы:</label><br>
+        <label>You are:</label><br>
         <select name="role">
-            <option value="student">Студент</option>
-            <option value="tutor">Преподаватель</option>
+            <option value="student">Student</option>
+            <option value="tutor">Tutor</option>
         </select><br><br>
 
-        <input type="submit" value="Войти">
+        <input type="submit" value="Login">
     </form>
     <div id="login-message"></div>
-    <p>Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a></p>
+    <p>No account? <a href="register.html">Register</a></p>
     <script>
     document.getElementById('login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -44,7 +44,7 @@
             messageDiv.textContent = text;
             messageDiv.style.color = 'red';
         } catch (err) {
-            messageDiv.textContent = 'Ошибка при отправке запроса';
+            messageDiv.textContent = 'Request error';
             messageDiv.style.color = 'red';
         }
     });

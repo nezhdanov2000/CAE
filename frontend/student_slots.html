@@ -2,26 +2,26 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Доступные таймслоты</title>
+    <title>Available Timeslots</title>
 </head>
 <body>
-    <h2>Выберите курс</h2>
+    <h2>Select a Course</h2>
 
     <form id="filter-form">
         <select id="course-select" name="course_id">
-            <!-- курсы появятся автоматически -->
+            <!-- courses will appear automatically -->
         </select>
-        <button type="submit">Показать</button>
+        <button type="submit">Show</button>
     </form>
 
-    <h2>Доступные таймслоты</h2>
+    <h2>Available Timeslots</h2>
     <div id="slots"></div>
     <div id="enroll-message"></div>
     
-    <a href="dashboard.html">Главное меню</a>
+    <a href="dashboard.html">Main menu</a>
     
     <script>
-        // Загрузим список курсов
+        // Load the list of courses
         fetch('../backend/courses.php')
             .then(res => res.json())
             .then(courses => {
@@ -42,18 +42,18 @@
                 .then(slots => {
                     const container = document.getElementById('slots');
                     if (slots.length === 0) {
-                        container.innerHTML = '<p>Нет доступных слотов.</p>';
+                        container.innerHTML = '<p>No available slots.</p>';
                         return;
                     }
 
-                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Преподаватель</th><th></th></tr>';
+                    let html = '<table border="1"><tr><th>Date</th><th>Start</th><th>End</th><th>Tutor</th><th></th></tr>';
                     slots.forEach(slot => {
                         html += `<tr>
                             <td>${slot.Date}</td>
                             <td>${slot.Start_Time}</td>
                             <td>${slot.End_Time}</td>
                             <td>${slot.Tutor_Name}</td>
-                            <td><button onclick="enroll(${slot.Timeslot_ID})">Записаться</button></td>
+                            <td><button onclick="enroll(${slot.Timeslot_ID})">Enroll</button></td>
                         </tr>`;
                     });
                     html += '</table>';
@@ -72,17 +72,17 @@
             })
             .then(response => response.text())
             .then(text => {
-                if (text.includes('успешно')) {
+                if (text.includes('You have successfully enrolled in the slot!')) {
                     messageDiv.textContent = text;
                     messageDiv.style.color = 'green';
-                    // Можно обновить список слотов или скрыть кнопку
+
                 } else {
-                    messageDiv.textContent = text;
+                    messageDiv.textContent = 'Request error';
                     messageDiv.style.color = 'red';
                 }
             })
             .catch(() => {
-                messageDiv.textContent = 'Ошибка при отправке запроса';
+                messageDiv.textContent = 'Request error';
                 messageDiv.style.color = 'red';
             });
         }

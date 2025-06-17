@@ -18,7 +18,7 @@ if ($timeslot_id === 0) {
     exit();
 }
 
-// Удаляем запись из Student_Choice
+// Delete the record from Student_Choice
 $delete = $conn->prepare("DELETE FROM Student_Choice WHERE Student_ID = ? AND Timeslot_ID = ?");
 $delete->bind_param("ii", $student_id, $timeslot_id);
 $delete->execute();
@@ -26,6 +26,6 @@ $delete->close();
 
 
 
-// Можно также удалить из Student_Join или Appointment — если требуется
+// You can also delete from Student_Join or Appointment if needed
 
 echo json_encode(['success' => true]);

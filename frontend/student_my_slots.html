@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мои записи</title>
+    <title>My Bookings</title>
 </head>
 <body>
-    <h2>Ваши записи на таймслоты</h2>
-    <div id="my-slots">Загрузка...</div>
+    <h2>Your Booked Timeslots</h2>
+    <div id="my-slots">Loading...</div>
 
-    <a href="dashboard.html">Главное меню</a>
+    <a href="dashboard.html">Main Menu</a>
 
     <script>
         function loadMySlots() {
@@ -18,11 +18,11 @@
                     const container = document.getElementById('my-slots');
 
                     if (!Array.isArray(data) || data.length === 0) {
-                        container.innerHTML = '<p>У вас нет записей.</p>';
+                        container.innerHTML = '<p>You have no bookings.</p>';
                         return;
                     }
 
-                    let html = '<table border="1"><tr><th>Дата</th><th>Начало</th><th>Окончание</th><th>Курс</th><th>Преподаватель</th><th></th></tr>';
+                    let html = '<table border="1"><tr><th>Date</th><th>Start</th><th>End</th><th>Course</th><th>Tutor</th><th></th></tr>';
                     data.forEach(slot => {
                         html += `<tr>
                             <td>${slot.Date}</td>
@@ -30,7 +30,7 @@
                             <td>${slot.End_Time}</td>
                             <td>${slot.Course_name}</td>
                             <td>${slot.Tutor_Name}</td>
-                            <td><button onclick="unenroll(${slot.Timeslot_ID})">Отменить</button></td>
+                            <td><button onclick="unenroll(${slot.Timeslot_ID})">Cancel</button></td>
                         </tr>`;
                     });
                     html += '</table>';
@@ -38,12 +38,12 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    document.getElementById('my-slots').innerHTML = '<p>Ошибка загрузки</p>';
+                    document.getElementById('my-slots').innerHTML = '<p>Loading error</p>';
                 });
         }
 
         function unenroll(timeslotId) {
-            if (!confirm('Вы уверены, что хотите отменить запись?')) return;
+            if (!confirm('Are you sure you want to cancel the booking?')) return;
 
             fetch('../backend/student_unenroll.php', {
                 method: 'POST',
@@ -53,9 +53,9 @@
             .then(res => res.json())
             .then(response => {
                 if (response.success) {
-                    loadMySlots(); // обновить таблицу
+                    loadMySlots(); // update the table
                 } else {
-                    alert(response.error || 'Ошибка при отмене');
+                    alert(response.error || 'Error while cancelling');
                 }
             });
         }

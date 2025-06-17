@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель пользователя</title>
+    <title>User Dashboard</title>
 </head>
 <body>
-    <h2>Добро пожаловать, <span id="userName"></span>!</h2>
-    <p>Вы вошли как <span id="userRole"></span>.</p>
+    <h2>Welcome, <span id="userName"></span>!</h2>
+    <p>You are logged in as <span id="userRole"></span>.</p>
 
     <div id="tutorLinks" style="display: none;">
-        <a href="create_slot.html">Создать слот</a>
-        <a href="tutor_slots.html">Мои слоты</a>
-        <a href="tutors_slots.html">Все слоты</a>
-        <a href="my_appointments.html">Кто придет</a>
+        <a href="create_slot.html">Create Slot</a>
+        <a href="tutor_slots.html">My Slots</a>
+        <a href="tutors_slots.html">All Slots</a>
+        <a href="my_appointments.html">Who Will Come</a>
     </div>
 
     <div id="studentLinks" style="display: none;">
-        <a href="student_slots.html">Доступные записи</a>
-        <a href="student_my_slots.html">Мои записи</a>
+        <a href="student_slots.html">Available Bookings</a>
+        <a href="student_my_slots.html">My Bookings</a>
     </div>
 
-    <a href="../backend/logout.php">Выйти</a>
+    <a href="../backend/logout.php">Logout</a>
 
     <script>
         // Fetch user data from the backend
@@ -29,9 +29,9 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('userName').textContent = data.name + ' ' + data.surname;
-                document.getElementById('userRole').textContent = data.role === 'student' ? 'студент' : 'преподаватель';
+                document.getElementById('userRole').textContent = data.role === 'student' ? 'student' : 'tutor';
                 
-                // Показываем соответствующие ссылки в зависимости от роли
+                // Show appropriate links depending on the role
                 if (data.role === 'student') {
                     document.getElementById('studentLinks').style.display = 'block';
                 } else {

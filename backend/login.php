@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$email || !$password || !$role) {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         } else {
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         }
         exit();
     }
@@ -46,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (is_fetch_request()) {
             http_response_code(401);
-            echo 'Неверный email или пароль.';
+            echo 'Invalid email or password.';
         } else {
-            echo 'Неверный email или пароль.';
+            echo 'Invalid email or password.';
         }
         exit();
     } elseif ($role === 'tutor') {
@@ -74,17 +74,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (is_fetch_request()) {
             http_response_code(401);
-            echo 'Неверный email или пароль.';
+            echo 'Invalid email or password.';
         } else {
-            echo 'Неверный email или пароль.';
+            echo 'Invalid email or password.';
         }
         exit();
     } else {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Некорректная роль.';
+            echo 'Invalid role.';
         } else {
-            echo 'Некорректная роль.';
+            echo 'Invalid role.';
         }
         exit();
     }

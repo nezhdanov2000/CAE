@@ -14,14 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$student_id || !$timeslot_id) {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Пожалуйста, выберите слот.';
+            echo 'Please select a slot.';
         } else {
-            echo 'Пожалуйста, выберите слот.';
+            echo 'Please select a slot.';
         }
         exit();
     }
 
-    // Проверка: не записан ли уже студент на этот слот
+    // Check: is the student already enrolled in this slot
     $stmt = $conn->prepare('SELECT 1 FROM Student_Choice WHERE Student_ID = ? AND Timeslot_ID = ?');
     $stmt->bind_param('ii', $student_id, $timeslot_id);
     $stmt->execute();
@@ -29,15 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->num_rows > 0) {
         if (is_fetch_request()) {
             http_response_code(409);
-            echo 'Вы уже записаны на этот слот.';
+            echo 'You are already enrolled in this slot.';
         } else {
-            echo 'Вы уже записаны на этот слот.';
+            echo 'You are already enrolled in this slot.';
         }
         exit();
     }
     $stmt->close();
 
-    // Запись на слот
+    // Enroll the student in the slot
     $stmt = $conn->prepare('INSERT INTO Student_Choice (Student_ID, Timeslot_ID) VALUES (?, ?)');
     $stmt->bind_param('ii', $student_id, $timeslot_id);
     $success = $stmt->execute();
@@ -45,16 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($success) {
         if (is_fetch_request()) {
-            echo 'Вы успешно записались на слот!';
+            echo 'You have successfully enrolled in the slot!';
         } else {
-            echo 'Вы успешно записались на слот!';
+            echo 'You have successfully enrolled in the slot!';
         }
     } else {
         if (is_fetch_request()) {
             http_response_code(500);
-            echo 'Ошибка при записи на слот.';
+            echo 'Error enrolling in the slot.';
         } else {
-            echo 'Ошибка при записи на слот.';
+            echo 'Error enrolling in the slot.';
         }
     }
     exit();
@@ -66,7 +66,7 @@ error_reporting(E_ALL);
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
     http_response_code(403);
-    echo json_encode(['error' => 'Нет доступа']);
+    echo json_encode(['error' => 'No access']);
     exit();
 }
 
@@ -75,11 +75,11 @@ $timeslot_id = (int)($_POST['timeslot_id'] ?? 0);
 $group_id = $timeslot_id;
 
 if (!$timeslot_id) {
-    echo json_encode(['error' => 'Не передан timeslot_id']);
+    echo json_encode(['error' => 'timeslot_id is not passed']);
     exit();
 }
 
-// Проверка: уже записан?
+// Check: is the student already enrolled in this slot
 $check = $conn->prepare("SELECT 1 FROM Student_Choice WHERE Student_ID = ? AND Timeslot_ID = ?");
 $check->bind_param("ii", $student_id, $timeslot_id);
 $check->execute();
@@ -89,13 +89,13 @@ if ($res->num_rows > 0) {
     exit();
 }
 
-// Запись в Student_Choice
+// Enroll the student in the slot
 $insert = $conn->prepare("INSERT INTO Student_Choice (Student_ID, Timeslot_ID) VALUES (?, ?)");
 $insert->bind_param("ii", $student_id, $timeslot_id);
 $insert->execute();
 $insert->close();
 
-// Получаем Tutor_ID
+// Get the Tutor_ID
 $tutor_q = $conn->prepare("SELECT Tutor_ID FROM Tutor_Creates WHERE Timeslot_ID = ?");
 $tutor_q->bind_param("i", $timeslot_id);
 $tutor_q->execute();
@@ -108,7 +108,7 @@ if (!$tutor_id) {
     exit();
 }
 
-// Если Appointment ещё не существует — создаём
+// If Appointment does not exist, create it
 $check_appointment = $conn->prepare("SELECT 1 FROM Appointment WHERE Timeslot_ID = ?");
 $check_appointment->bind_param("i", $timeslot_id);
 $check_appointment->execute();
@@ -125,7 +125,7 @@ if ($result->num_rows === 0) {
     $appointment->close();
 }
 
-// Добавляем студента в группу (группа = timeslot_id)
+// Add the student to the group (group = timeslot_id)
 $check_join = $conn->prepare("SELECT 1 FROM Student_Join WHERE Student_ID = ? AND Group_ID = ?");
 $check_join->bind_param("ii", $student_id, $group_id);
 $check_join->execute();

@@ -19,7 +19,7 @@ if (!isset($_POST['timeslot_id'])) {
 $tutor_id = $_SESSION['user_id'];
 $timeslot_id = (int) $_POST['timeslot_id'];
 
-// Проверим, принадлежит ли слот преподавателю
+// Check if the slot belongs to the tutor
 $check = $conn->prepare("SELECT 1 FROM Tutor_Creates WHERE Tutor_ID = ? AND Timeslot_ID = ?");
 $check->bind_param("ii", $tutor_id, $timeslot_id);
 $check->execute();

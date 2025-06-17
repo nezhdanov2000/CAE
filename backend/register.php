@@ -21,9 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$name || !$surname || !$password || !$email || !$role) {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         } else {
-            echo 'Пожалуйста, заполните все поля.';
+            echo 'Please fill in all fields.';
         }
         exit();
     }
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->num_rows > 0) {
         if (is_fetch_request()) {
             http_response_code(409);
-            echo 'Пользователь с таким email уже существует.';
+            echo 'User with this email already exists.';
         } else {
-            echo 'Пользователь с таким email уже существует.';
+            echo 'User with this email already exists.';
         }
         exit();
     }
@@ -58,25 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (is_fetch_request()) {
             http_response_code(400);
-            echo 'Некорректная роль.';
+            echo 'Invalid role.';
         } else {
-            echo 'Некорректная роль.';
+            echo 'Invalid role.';
         }
         exit();
     }
 
     if ($success) {
         if (is_fetch_request()) {
-            echo '✅ Регистрация прошла успешно!';
+            echo '✅ Registration successful!';
         } else {
             header('Location: ../frontend/login.html');
         }
     } else {
         if (is_fetch_request()) {
             http_response_code(500);
-            echo '❌ Ошибка при регистрации.';
+            echo '❌ Error during registration.';
         } else {
-            echo '❌ Ошибка при регистрации.';
+            echo '❌ Error during registration.';
         }
     }
     exit();

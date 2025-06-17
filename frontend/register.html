@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
+    <title>Registration</title>
 </head>
 <body>
-    <h2>Регистрация</h2>
+    <h2>Registration</h2>
     <form id="register-form">
-        <label>Имя:</label><br>
+        <label>First Name:</label><br>
         <input type="text" name="name" required><br>
 
-        <label>Фамилия:</label><br>
+        <label>Last Name:</label><br>
         <input type="text" name="surname" required><br>
 
-        <label>Пароль:</label><br>
+        <label>Password:</label><br>
         <input type="password" name="password" id="password" required><br>
 
-        <label>Подтвердите пароль:</label><br>
+        <label>Confirm Password:</label><br>
         <input type="password" name="confirm_password" id="confirm_password" required><br>
 
         <label>Email:</label><br>
         <input type="email" name="email" required><br>
 
-        <label>Вы:</label><br>
+        <label>You are:</label><br>
         <select name="role" required>
-            <option value="student">Студент</option>
-            <option value="tutor">Преподаватель</option>
+            <option value="student">Student</option>
+            <option value="tutor">Tutor</option>
         </select><br><br>
 
-        <input type="submit" value="Зарегистрироваться">
+        <input type="submit" value="Register">
     </form>
     <div id="register-message"></div>
-    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+    <p>Already have an account? <a href="login.html">Login</a></p>
 
 
     
@@ -44,7 +44,7 @@
         const messageDiv = document.getElementById('register-message');
         messageDiv.textContent = '';
         if (pass !== conf) {
-            messageDiv.textContent = 'Пароли не совпадают!';
+            messageDiv.textContent = 'Passwords do not match!';
             messageDiv.style.color = 'red';
             return;
         }
@@ -60,7 +60,7 @@
                 window.location.href = response.url;
                 return;
             }
-            if (text.includes('успешно') || text.includes('успешна')) {
+            if (text.includes('successfully')) {
                 messageDiv.textContent = text;
                 messageDiv.style.color = 'green';
                 setTimeout(() => window.location.href = 'login.html', 1500);
@@ -69,7 +69,7 @@
                 messageDiv.style.color = 'red';
             }
         } catch (err) {
-            messageDiv.textContent = 'Ошибка при отправке запроса';
+            messageDiv.textContent = 'Request error';
             messageDiv.style.color = 'red';
         }
     });
