@@ -1,12 +1,8 @@
 <?php
-session_start();
-require_once 'db.php';
+require_once '../common/auth.php';
+require_once '../common/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    http_response_code(403);
-    echo json_encode([]);
-    exit();
-}
+require_student();
 
 $course_id = (int) ($_GET['course_id'] ?? 0);
 
@@ -29,3 +25,4 @@ $slots = $result->fetch_all(MYSQLI_ASSOC);
 
 header('Content-Type: application/json');
 echo json_encode($slots);
+?> 

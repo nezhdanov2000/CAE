@@ -1,11 +1,6 @@
 <?php
-
+require_once 'auth.php';
 require_once 'db.php';
-
-function is_fetch_request() {
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
-        (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
-}
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -20,8 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$name || !$surname || !$password || !$email || !$role) {
         if (is_fetch_request()) {
-            http_response_code(400);
-            echo 'Please fill in all fields.';
+            send_json_error('Please fill in all fields.', 400);
         } else {
             echo 'Please fill in all fields.';
         }
@@ -34,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
     if ($stmt->num_rows > 0) {
         if (is_fetch_request()) {
-            http_response_code(409);
-            echo 'User with this email already exists.';
+            send_json_error('User with this email already exists.', 409);
         } else {
             echo 'User with this email already exists.';
         }
@@ -57,8 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     } else {
         if (is_fetch_request()) {
-            http_response_code(400);
-            echo 'Invalid role.';
+            send_json_error('Invalid role.', 400);
         } else {
             echo 'Invalid role.';
         }
@@ -67,17 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($success) {
         if (is_fetch_request()) {
-            echo '✅ Registration successful!';
+            send_json_success(null, '✅ Registration successful!');
         } else {
-            header('Location: ../frontend/login.html');
+            header('Location: ../../frontend/login.html');
         }
     } else {
         if (is_fetch_request()) {
-            http_response_code(500);
-            echo '❌ Error during registration.';
+            send_json_error('❌ Error during registration.', 500);
         } else {
             echo '❌ Error during registration.';
         }
     }
     exit();
 }
+?> 

@@ -4,41 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Timeslots and Students</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <h1>My Timeslots and Student Count</h1>
-    <div id="appointments-container">
-        <table id="appointments-table" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Number of Students</th>
-                </tr>
-            </thead>
-            <tbody id="appointments-body"></tbody>
-        </table>
-        <div id="error-message" style="display: none;"></div>
-        <div id="no-appointments" style="display: none;">
-            You have no created timeslots with enrolled students yet.
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="panel">
+            <h2>My Timeslots and Student Count</h2>
+            <div id="appointments-container">
+                <table id="appointments-table" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Number of Students</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-body"></tbody>
+                </table>
+                <div id="error-message" style="display: none;"></div>
+                <div id="no-appointments" style="display: none;">
+                    You have no created timeslots with enrolled students yet.
+                </div>
+            </div>
+            <div class="main-menu-link">
+                <a href="../common/dashboard.html">Main Menu</a>
+            </div>
         </div>
     </div>
-    <a href="dashboard.html">Main Menu</a>
-
     <script>
-        fetch('../backend/dashboard.php')
+        fetch('../../backend/common/dashboard.php')
             .then(response => response.json())
             .then(data => {
                 if (data.role !== 'tutor') {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '../common/dashboard.html';
                 }
             })
             .catch(error => {
                 document.getElementById('error-message').textContent = 'Access check error';
                 document.getElementById('error-message').style.display = 'block';
             });
-        fetch('../backend/my_appointments.php')
+        fetch('../../backend/tutor/appointments.php')
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();

@@ -1,18 +1,10 @@
 <?php
-session_start();
-require_once 'db.php';
+require_once '../common/auth.php';
+require_once '../common/db.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_tutor();
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'tutor') {
-    http_response_code(403);
-    echo json_encode(['error' => 'Unauthorized access']);
-    exit();
-}
-
-$tutor_id = $_SESSION['user_id'];
+$tutor_id = get_current_user_id();
 
 $query = "
     SELECT 

@@ -1,12 +1,9 @@
 <?php
-session_start();
+require_once 'auth.php';
+
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Unauthorized']);
-    exit();
-}
+require_auth();
 
 $response = [
     'name' => $_SESSION['name'],
@@ -15,4 +12,4 @@ $response = [
 ];
 
 echo json_encode($response);
-?>
+?> 
