@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="overlay"></div>
@@ -16,13 +16,13 @@
             <h2>Your timeslots</h2>
             <div id="slots">Loading...</div>
             <div class="main-menu-link">
-                <a href="dashboard.html">Main menu</a>
+                <a href="../common/dashboard.html">Main menu</a>
             </div>
         </div>
     </div>
     <script>
         function loadSlots() {
-            fetch('../backend/tutor_slots.php')
+            fetch('../../backend/tutor/slots.php')
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById('slots');
@@ -51,7 +51,7 @@
         function deleteSlot(id) {
             if (!confirm('Are you sure you want to delete this slot?')) return;
 
-            fetch('../backend/delete_slot.php', {
+            fetch('../../backend/tutor/delete_slot.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'timeslot_id=' + encodeURIComponent(id)
@@ -69,4 +69,4 @@
         window.onload = loadSlots;
     </script>
 </body>
-</html>
+</html> 

@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="overlay"></div>
@@ -35,7 +35,7 @@
             </form>
             <div class="slot-message" id="slot-message"></div>
             <div class="main-menu-link">
-                <a href="dashboard.html">Main menu</a>
+                <a href="../common/dashboard.html">Main menu</a>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
         const messageDiv = document.getElementById('slot-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('../backend/create_slot.php', {
+            const response = await fetch('../../backend/tutor/create_slot.php', {
                 method: 'POST',
                 body: data
             });
@@ -67,6 +67,4 @@
     });
     </script>
 </body>
-</html>
-
-
+</html> 

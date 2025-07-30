@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="overlay"></div>
@@ -24,13 +24,13 @@
             <div id="slots"></div>
             <div id="enroll-message"></div>
             <div class="main-menu-link">
-                <a href="dashboard.html">Main menu</a>
+                <a href="../common/dashboard.html">Main menu</a>
             </div>
         </div>
     </div>
     <script>
         // Load the list of courses
-        fetch('../backend/courses.php')
+        fetch('../../backend/common/courses.php')
             .then(res => res.json())
             .then(courses => {
                 const select = document.getElementById('course-select');
@@ -45,7 +45,7 @@
         document.getElementById('filter-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const courseId = document.getElementById('course-select').value;
-            fetch('../backend/student_slots.php?course_id=' + courseId)
+            fetch('../../backend/student/slots.php?course_id=' + courseId)
                 .then(res => res.json())
                 .then(slots => {
                     const container = document.getElementById('slots');
@@ -74,7 +74,7 @@
             messageDiv.textContent = '';
             const data = new FormData();
             data.append('timeslot_id', timeslotId);
-            fetch('../backend/student_enroll.php', {
+            fetch('../../backend/student/enroll.php', {
                 method: 'POST',
                 body: data
             })
@@ -96,4 +96,4 @@
         }
     </script>
 </body>
-</html>
+</html> 

@@ -1,12 +1,6 @@
 <?php
-session_start();
-
+require_once 'auth.php';
 require_once 'db.php';
-
-function is_fetch_request() {
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
-        (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
@@ -15,8 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$email || !$password || !$role) {
         if (is_fetch_request()) {
-            http_response_code(400);
-            echo 'Please fill in all fields.';
+            send_json_error('Please fill in all fields.', 400);
         } else {
             echo 'Please fill in all fields.';
         }
@@ -36,17 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['role'] = 'student';
                 $_SESSION['name'] = $name;
                 $_SESSION['surname'] = $surname;
+                $stmt->close();
                 if (is_fetch_request()) {
-                    echo json_encode(['redirect' => '../frontend/dashboard.html']);
+                    echo json_encode(['redirect' => '../../frontend/common/dashboard.html']);
                 } else {
-                    header('Location: ../frontend/dashboard.html');
+                    header('Location: ../../frontend/common/dashboard.html');
                 }
                 exit();
             }
         }
+        $stmt->close();
         if (is_fetch_request()) {
-            http_response_code(401);
-            echo 'Invalid email or password.';
+            send_json_error('Invalid email or password.', 401);
         } else {
             echo 'Invalid email or password.';
         }
@@ -64,25 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['role'] = 'tutor';
                 $_SESSION['name'] = $name;
                 $_SESSION['surname'] = $surname;
+                $stmt->close();
                 if (is_fetch_request()) {
-                    echo json_encode(['redirect' => '../frontend/dashboard.html']);
+                    echo json_encode(['redirect' => '../../frontend/common/dashboard.html']);
                 } else {
-                    header('Location: ../frontend/dashboard.html');
+                    header('Location: ../../frontend/common/dashboard.html');
                 }
                 exit();
             }
         }
+        $stmt->close();
         if (is_fetch_request()) {
-            http_response_code(401);
-            echo 'Invalid email or password.';
+            send_json_error('Invalid email or password.', 401);
         } else {
             echo 'Invalid email or password.';
         }
         exit();
     } else {
         if (is_fetch_request()) {
-            http_response_code(400);
-            echo 'Invalid role.';
+            send_json_error('Invalid role.', 400);
         } else {
             echo 'Invalid role.';
         }
@@ -90,6 +84,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt->close();
 $conn->close();
-?>
+?> 

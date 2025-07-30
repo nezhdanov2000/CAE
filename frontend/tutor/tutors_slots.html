@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="overlay"></div>
@@ -23,13 +23,13 @@
             <h2>Available Timeslots</h2>
             <div id="slots"></div>
             <div class="main-menu-link">
-                <a href="dashboard.html">Main menu</a>
+                <a href="../common/dashboard.html">Main menu</a>
             </div>
         </div>
     </div>
     <script>
         // Load the list of courses
-        fetch('../backend/courses.php')
+        fetch('../../backend/common/courses.php')
             .then(res => res.json())
             .then(courses => {
                 const select = document.getElementById('course-select');
@@ -44,7 +44,7 @@
         document.getElementById('filter-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const courseId = document.getElementById('course-select').value;
-            fetch('../backend/tutors_slots.php?course_id=' + courseId)
+            fetch('../../backend/common/tutors_slots.php?course_id=' + courseId)
                 .then(res => res.json())
                 .then(slots => {
                     const container = document.getElementById('slots');

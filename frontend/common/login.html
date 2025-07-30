@@ -7,14 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="overlay"></div>
     <div class="container">
         <!-- Login Panel -->
         <div class="panel left">
-            <img src="img/logo.png" alt="Stamford Logo" class="logo">
+            <img src="../img/logo.png" alt="Stamford Logo" class="logo">
             <h2>Login to Stamford CAE</h2>
             <form id="login-form">
                 <div class="form-group">
@@ -73,7 +73,7 @@
         const messageDiv = document.getElementById('login-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('../backend/login.php', {
+            const response = await fetch('../../backend/common/login.php', {
                 method: 'POST',
                 body: data
             });
@@ -91,4 +91,4 @@
     });
     </script>
 </body>
-</html>
+</html> 
