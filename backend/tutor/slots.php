@@ -1,14 +1,10 @@
 <?php
-session_start();
-require_once 'db.php';
+require_once '../common/auth.php';
+require_once '../common/db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'tutor') {
-    http_response_code(403);
-    echo json_encode([]);
-    exit();
-}
+require_tutor();
 
-$tutor_id = $_SESSION['user_id'];
+$tutor_id = get_current_user_id();
 
 $query = "
     SELECT t.Timeslot_ID, t.Date, t.Start_Time, t.End_Time, c.Course_name
@@ -28,4 +24,4 @@ $slots = $result->fetch_all(MYSQLI_ASSOC);
 
 header('Content-Type: application/json');
 echo json_encode($slots);
-?>
+?> 
