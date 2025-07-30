@@ -40,6 +40,76 @@
         </div>
     </div>
     <script>
+    document.getElementById('create-slot-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const messageDiv = document.getElementById('slot-message');
+        messageDiv.textContent = '';
+        try {
+            const response = await fetch('../../backend/tutor/create_slot.php', {
+                method: 'POST',
+                body: data
+            });
+            const text = await response.text();
+            if (text.includes('successfully')) {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'green';
+                form.reset();
+            } else {
+                messageDiv.textContent = text;
+                messageDiv.style.color = 'red';
+            }
+        } catch (err) {
+            messageDiv.textContent = 'Request error';
+            messageDiv.style.color = 'red';
+        }
+    });
+    </script>
+</body>
+</html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Slot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="panel">
+            <h2>Create a Free Slot</h2>
+            <form id="create-slot-form">
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Start Time:</label>
+                    <input type="time" name="start_time" required>
+                </div>
+                <div class="form-group">
+                    <label>End Time:</label>
+                    <input type="time" name="end_time" required>
+                </div>
+                <div class="form-group">
+                    <label>Course Name:</label>
+                    <input type="text" name="course_name" required>
+                </div>
+                <input type="submit" value="Create Slot">
+            </form>
+            <div class="slot-message" id="slot-message"></div>
+            <div class="main-menu-link">
+                <a href="../common/dashboard.html">Main menu</a>
+            </div>
+        </div>
+    </div>
+    <script>
     // Add real-time validation for time fields
     document.addEventListener('DOMContentLoaded', function() {
         const startTimeInput = document.querySelector('input[name="start_time"]');
