@@ -1,57 +1,85 @@
-# Система управления таймслотами для обучения
+# Learning Time Slot Management System
 
-Веб-приложение для управления таймслотами обучения, позволяющее преподавателям создавать слоты для занятий, а студентам - записываться на них.
+A web application for managing learning time slots, allowing tutors to create slots for sessions and students to enroll in them.
 
-## Функциональность
+## Features
 
-### Для преподавателей:
-- Просмотр всех доступных таймслотов
-- Создание новых таймслотов
-- Управление своими таймслотами
+### For Tutors:
+- View all available time slots
+- Create new time slots
+- Manage personal time slots
+- View enrolled students
+- Cancel or modify slots
 
-### Для студентов:
-- Просмотр доступных таймслотов
-- Запись на таймслоты
-- Просмотр своих записей
-- Отмена записи
+### For Students:
+- View available time slots
+- Enroll in time slots
+- View personal enrollments
+- Cancel enrollment
+- View tutor information
 
-## Технологии
+## Technologies
 
 - PHP
 - MySQL
 - HTML/CSS/JavaScript
-- XAMPP (для локальной разработки)
+- XAMPP (for local development)
+- Font Awesome (for icons)
+- Google Fonts (Roboto)
 
-## Установка
+## Installation
 
-1. Клонируйте репозиторий:
+1. Clone the repository:
 ```bash
-git clone [URL репозитория]
+git clone [repository URL]
 ```
 
-2. Настройте базу данных:
-- Создайте базу данных MySQL
-- Импортируйте структуру базы данных из файла `database.sql`
-- Создайте файл `db.php` с настройками подключения к базе данных
+2. Set up the database:
+- Create a MySQL database
+- Import the database structure from `cae_structure.sql`
+- Create `db.php` with database connection settings
 
-3. Настройте веб-сервер:
-- Разместите файлы в директории веб-сервера (например, htdocs для XAMPP)
-- Убедитесь, что PHP и MySQL запущены
+3. Configure the web server:
+- Place files in the web server directory (e.g., htdocs for XAMPP)
+- Ensure PHP and MySQL are running
 
-4. Откройте приложение в браузере:
+4. Open the application in your browser:
 ```
 http://localhost/Project2
 ```
 
-## Структура проекта
+## Project Structure
 
-- `*.php` - PHP файлы для обработки запросов
-- `*.html` - HTML файлы для отображения интерфейса
-- `database.sql` - SQL файл с структурой базы данных
-- `db.php` - Конфигурация подключения к базе данных
+- `frontend/` - Frontend files
+  - `*.html` - HTML interface files
+  - `style.css` - Global styles
+  - `img/` - Images and icons
+- `*.php` - PHP files for request handling
+- `cae_structure.sql` - SQL file with database structure
+- `db.php` - Database connection configuration
 
-## Безопасность
+## Security
 
-- Все запросы к базе данных используют подготовленные выражения
-- Проверка авторизации и ролей пользователей
-- Защита от SQL-инъекций 
+- All database queries use prepared statements
+- User authentication and role verification
+- SQL injection protection
+- XSS protection through input sanitization
+- CSRF protection for forms
+- Secure password hashing
+- Session management and timeout
+
+## Development
+
+The project uses Git for version control with the following branches:
+- `main` - Production branch
+- `development` - Development branch
+
+## Contributing
+
+1. Create a new branch for your feature
+2. Make your changes
+3. Submit a pull request to the development branch
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 

@@ -1,38 +1,61 @@
 <?php
+require_once '../common/auth.php';
+require_once '../common/db.php';
 
-require_once 'db.php';
+require_tutor();
 
-session_start();
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'tutor') {
-    die("❌ Access denied. Please login as a tutor.");
-}
-
-$tutor_id = $_SESSION['user_id'];
+$tutor_id = get_current_user_id();
 
 $course_name = trim($_POST['course_name'] ?? '');
 $date = $_POST['date'] ?? '';
 $start_time = $_POST['start_time'] ?? '';
 $end_time = $_POST['end_time'] ?? '';
 
-function is_fetch_request() {
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
-        (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = $_POST['date'] ?? '';
     $start_time = $_POST['start_time'] ?? '';
     $end_time = $_POST['end_time'] ?? '';
     $course_name = trim($_POST['course_name'] ?? '');
-    $tutor_id = $_SESSION['user_id'] ?? null;
 
-    if (!$date || !$start_time || !$end_time || !$course_name || !$tutor_id) {
+    if (!$date || !$start_time || !$end_time || !$course_name) {
         if (is_fetch_request()) {
-            http_response_code(400);
-            echo 'Please fill in all fields.';
+            send_json_error('Please fill in all fields.', 400);
         } else {
             echo 'Please fill in all fields.';
+        }
+        exit();
+    }
+
+    // Check for time slot conflicts
+    $stmt = $conn->prepare("
+        SELECT t.Start_Time, t.End_Time 
+        FROM Timeslot t 
+        JOIN Tutor_Creates tc ON t.Timeslot_ID = tc.Timeslot_ID 
+        WHERE tc.Tutor_ID = ? AND t.Date = ?
+    ");
+    $stmt->bind_param("is", $tutor_id, $date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $conflicts = false;
+    while ($row = $result->fetch_assoc()) {
+        $existing_start = $row['Start_Time'];
+        $existing_end = $row['End_Time'];
+        
+        // Check if new slot overlaps with existing slot
+        // Overlap occurs when: new_start < existing_end AND new_end > existing_start
+        if ($start_time < $existing_end && $end_time > $existing_start) {
+            $conflicts = true;
+            break;
+        }
+    }
+    $stmt->close();
+    
+    if ($conflicts) {
+        if (is_fetch_request()) {
+            send_json_error('Time slot conflicts with existing slots. Please choose a different time.', 400);
+        } else {
+            echo 'Time slot conflicts with existing slots. Please choose a different time.';
         }
         exit();
     }
@@ -70,22 +93,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt2->close();
         if ($success2) {
             if (is_fetch_request()) {
-                echo 'Timeslot successfully created!';
+                send_json_success(null, 'Timeslot successfully created!');
             } else {
                 echo 'Timeslot successfully created!';
             }
         } else {
             if (is_fetch_request()) {
-                http_response_code(500);
-                echo 'Error linking the tutor.';
+                send_json_error('Error linking the tutor.', 500);
             } else {
                 echo 'Error linking the tutor.';
             }
         }
     } else {
         if (is_fetch_request()) {
-            http_response_code(500);
-            echo 'Error creating the timeslot.';
+            send_json_error('Error creating the timeslot.', 500);
         } else {
             echo 'Error creating the timeslot.';
         }
@@ -94,3 +115,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
+?> 
