@@ -416,3 +416,185 @@ button.delete:hover, button.cancel:hover {
         order: 3;
     }
 } 
+
+/* Schedule styles */
+.schedule-container {
+    padding: 20px !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+.schedule-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 20px !important;
+    background: rgba(20, 20, 20, 0.85) !important;
+    padding: 20px !important;
+    border-radius: 12px !important;
+    color: white !important;
+}
+
+.week-navigation {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+}
+
+.week-nav-btn {
+    background: #4a90e2 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 15px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    transition: background 0.2s !important;
+}
+
+.week-nav-btn:hover {
+    background: #357ab8 !important;
+}
+
+.week-nav-btn:disabled {
+    background: #666 !important;
+    cursor: not-allowed !important;
+}
+
+.current-week {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+}
+
+.schedule-grid {
+    background: rgba(20, 20, 20, 0.85) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25) !important;
+}
+
+.schedule-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    color: white !important;
+}
+
+.schedule-table th,
+.schedule-table td {
+    border: 1px solid #444 !important;
+    padding: 8px !important;
+    text-align: center !important;
+    vertical-align: top !important;
+    position: relative !important;
+}
+
+.schedule-table th {
+    background: #333 !important;
+    font-weight: bold !important;
+    padding: 12px 8px !important;
+}
+
+.time-column {
+    background: #2a2a2a !important;
+    font-weight: bold !important;
+    width: 80px !important;
+    min-width: 80px !important;
+}
+
+.day-column {
+    background: #2a2a2a !important;
+    font-weight: bold !important;
+    width: 120px !important;
+    min-width: 120px !important;
+}
+
+.schedule-cell {
+    height: 20px !important;
+    position: relative !important;
+    background: #1a1a1a !important;
+}
+
+.class-block {
+    position: absolute !important;
+    left: 2px !important;
+    right: 2px !important;
+    background: linear-gradient(135deg, #4a90e2, #357ab8) !important;
+    border-radius: 4px !important;
+    padding: 4px 6px !important;
+    font-size: 0.8rem !important;
+    color: white !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    z-index: 10 !important;
+    cursor: pointer !important;
+    top: 0 !important;
+}
+
+.class-block:hover {
+    background: linear-gradient(135deg, #357ab8, #2d5a8a) !important;
+    transform: scale(1.02) !important;
+    transition: all 0.2s ease !important;
+}
+
+.class-course {
+    font-weight: bold !important;
+    margin-bottom: 2px !important;
+}
+
+.class-tutor {
+    font-size: 0.7rem !important;
+    opacity: 0.9 !important;
+}
+
+.loading {
+    text-align: center !important;
+    padding: 40px !important;
+    color: white !important;
+    font-size: 1.2rem !important;
+}
+
+.no-classes {
+    text-align: center !important;
+    padding: 20px !important;
+    color: #888 !important;
+    font-style: italic !important;
+}
+
+@media (max-width: 1200px) {
+    .schedule-container {
+        padding: 10px;
+    }
+    
+    .schedule-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .schedule-table {
+        font-size: 0.9rem;
+    }
+    
+    .time-column,
+    .day-column {
+        width: 60px;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-table {
+        font-size: 0.8rem;
+    }
+    
+    .schedule-cell {
+        height: 15px;
+    }
+    
+    .class-block {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+    }
+} 

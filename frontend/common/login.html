@@ -27,8 +27,8 @@
                 </div>
                 <div class="form-group">
                     <label>You are:</label>
-                    <select name="role">
-                        <option value="student">Student</option>
+                    <select name="role" required>
+                        <option value="student" selected>Student</option>
                         <option value="tutor">Tutor</option>
                     </select>
                 </div>
@@ -73,7 +73,7 @@
         const messageDiv = document.getElementById('login-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('../../backend/common/login.php', {
+            const response = await fetch('/CAE/backend/common/login.php', {
                 method: 'POST',
                 body: data
             });

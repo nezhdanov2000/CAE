@@ -14,7 +14,7 @@
     <div class="container">
         <!-- Register Panel -->
         <div class="panel left">
-            <img src="img/logo.png" alt="Stamford Logo" class="logo">
+            <img src="../img/logo.png" alt="Stamford Logo" class="logo">
             <h2>Register for Stamford CAE</h2>
             <form id="register-form">
                 <div class="form-group">
@@ -35,8 +35,8 @@
                 </div>
                 <div class="form-group">
                     <label>You are:</label>
-                    <select name="role">
-                        <option value="student">Student</option>
+                    <select name="role" required>
+                        <option value="student" selected>Student</option>
                         <option value="tutor">Tutor</option>
                     </select>
                 </div>
@@ -79,7 +79,7 @@
         const messageDiv = document.getElementById('register-message');
         messageDiv.textContent = '';
         try {
-            const response = await fetch('../../backend/common/register.php', {
+            const response = await fetch('/CAE/backend/common/register.php', {
                 method: 'POST',
                 body: data
             });
@@ -87,9 +87,6 @@
             if (response.ok) {
                 messageDiv.textContent = text;
                 messageDiv.style.color = 'green';
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
             } else {
                 messageDiv.textContent = text;
                 messageDiv.style.color = 'red';

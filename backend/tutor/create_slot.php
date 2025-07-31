@@ -26,6 +26,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    // Check for time slot conflicts - check all slots on the same date
+    $stmt = $conn->prepare("
+        SELECT t.Start_Time, t.End_Time, c.Course_name, CONCAT(tut.Name, ' ', tut.Surname) as Tutor_Name
+        FROM Timeslot t 
+        JOIN Tutor_Creates tc ON t.Timeslot_ID = tc.Timeslot_ID 
+        JOIN Tutor tut ON tc.Tutor_ID = tut.Tutor_ID
+        JOIN Course c ON t.Course_ID = c.Course_ID
+        WHERE t.Date = ?
+        ORDER BY t.Start_Time
+    ");
+    $stmt->bind_param("s", $date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $conflicts = false;
+    $conflict_details = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $existing_start = $row['Start_Time'];
+        $existing_end = $row['End_Time'];
+        $course_name = $row['Course_name'];
+        $tutor_name = $row['Tutor_Name'];
+        
+        // Check if new slot overlaps with existing slot
+        // Overlap occurs when: new_start < existing_end AND new_end > existing_start
+        if ($start_time < $existing_end && $end_time > $existing_start) {
+            $conflicts = true;
+            $conflict_details[] = "$course_name with $tutor_name ($existing_start - $existing_end)";
+        }
+    }
+    $stmt->close();
+    
+    if ($conflicts) {
+        $conflict_message = 'Time slot conflicts with existing slots: ' . implode(', ', $conflict_details);
+        if (is_fetch_request()) {
+            send_json_error($conflict_message, 400);
+        } else {
+            echo $conflict_message;
+        }
+        exit();
+    }
+
     // 1. Check if the course exists
     $stmt = $conn->prepare("SELECT Course_ID FROM Course WHERE Course_name = ?");
     $stmt->bind_param("s", $course_name);

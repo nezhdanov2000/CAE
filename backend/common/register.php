@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once 'auth.php';
 require_once 'db.php';
 
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (is_fetch_request()) {
             send_json_success(null, '✅ Registration successful!');
         } else {
-            header('Location: ../../frontend/login.html');
+            echo '✅ Registration successful!';
         }
     } else {
         if (is_fetch_request()) {
