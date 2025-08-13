@@ -49,6 +49,74 @@
         </div>
 
         <div class="content-section">
+            <h2 class="section-title">System Parameters</h2>
+            <div class="params-grid">
+                <div class="param-card">
+                    <h3>Database Statistics</h3>
+                    <div class="param-item">
+                        <span class="param-label">Total Students:</span>
+                        <span class="param-value" id="total-students">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Total Tutors:</span>
+                        <span class="param-value" id="total-tutors">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Total Courses:</span>
+                        <span class="param-value" id="total-courses">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Total Timeslots:</span>
+                        <span class="param-value" id="total-timeslots">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Future Timeslots:</span>
+                        <span class="param-value" id="future-timeslots">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Total Appointments:</span>
+                        <span class="param-value" id="total-appointments">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Today's Appointments:</span>
+                        <span class="param-value" id="today-appointments">0</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Total Groups:</span>
+                        <span class="param-value" id="total-groups">0</span>
+                    </div>
+                </div>
+
+                <div class="param-card">
+                    <h3>System Information</h3>
+                    <div class="param-item">
+                        <span class="param-label">PHP Version:</span>
+                        <span class="param-value" id="php-version">-</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">MySQL Version:</span>
+                        <span class="param-value" id="mysql-version">-</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Server Time:</span>
+                        <span class="param-value" id="server-time">-</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Timezone:</span>
+                        <span class="param-value" id="timezone">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Recent Admin Actions</h2>
+            <div class="actions-list" id="recent-actions">
+                <div class="loading">Loading recent actions...</div>
+            </div>
+        </div>
+
+        <div class="content-section">
             <h2 class="section-title">Quick Actions</h2>
             <p>Admin panel features will be added here:</p>
             <ul style="margin-left: 20px; margin-top: 10px;">
@@ -95,6 +163,68 @@
             }
         }
 
+        // Загружаем параметры системы
+        async function loadSystemParams() {
+            try {
+                const response = await fetch('/CAE/backend/admin/get_system_params.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const params = data.params;
+                    
+                    // Обновляем статистику базы данных
+                    document.getElementById('total-students').textContent = params.total_students;
+                    document.getElementById('total-tutors').textContent = params.total_tutors;
+                    document.getElementById('total-courses').textContent = params.total_courses;
+                    document.getElementById('total-timeslots').textContent = params.total_timeslots;
+                    document.getElementById('future-timeslots').textContent = params.future_timeslots;
+                    document.getElementById('total-appointments').textContent = params.total_appointments;
+                    document.getElementById('today-appointments').textContent = params.today_appointments;
+                    document.getElementById('total-groups').textContent = params.total_groups;
+                    
+                    // Обновляем информацию о системе
+                    document.getElementById('php-version').textContent = params.system_info.php_version;
+                    document.getElementById('mysql-version').textContent = params.system_info.mysql_version;
+                    document.getElementById('server-time').textContent = params.system_info.server_time;
+                    document.getElementById('timezone').textContent = params.system_info.timezone;
+                    
+                    // Обновляем последние действия
+                    displayRecentActions(params.recent_actions);
+                }
+            } catch (err) {
+                console.error('Error loading system params:', err);
+            }
+        }
+
+        // Отображаем последние действия
+        function displayRecentActions(actions) {
+            const container = document.getElementById('recent-actions');
+            
+            if (actions.length === 0) {
+                container.innerHTML = '<div class="no-actions">No recent actions found</div>';
+                return;
+            }
+            
+            let html = '';
+            actions.forEach(action => {
+                const date = new Date(action.Created_At).toLocaleString();
+                html += `
+                    <div class="action-item">
+                        <div class="action-header">
+                            <span class="action-admin">${action.Name} ${action.Surname}</span>
+                            <span class="action-time">${date}</span>
+                        </div>
+                        <div class="action-content">
+                            <strong>${action.Action}</strong>
+                            ${action.Details ? `<br><small>${action.Details}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
         // Выход из системы
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
@@ -113,6 +243,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadAdminData();
             loadStats();
+            loadSystemParams();
         });
     </script>
 </body>
