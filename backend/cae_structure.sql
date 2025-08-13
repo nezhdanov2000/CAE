@@ -1,3 +1,7 @@
+-- Создание базы данных
+CREATE DATABASE IF NOT EXISTS cae_database;
+USE cae_database;
+
 -- Студенты
 CREATE TABLE Student (
     Student_ID INT PRIMARY KEY AUTO_INCREMENT,
@@ -90,3 +94,48 @@ CREATE TABLE Appointment (
     FOREIGN KEY (Timeslot_ID) REFERENCES Timeslot(Timeslot_ID)
     -- Group_ID — абстрактный, без внешнего ключа
 );
+
+-- Администраторы системы
+CREATE TABLE Admin (
+    Admin_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Name VARCHAR(100) NOT NULL,
+    Surname VARCHAR(100) NOT NULL,
+    Role ENUM('super_admin', 'admin', 'moderator') DEFAULT 'admin',
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Last_Login TIMESTAMP NULL,
+    Is_Active BOOLEAN DEFAULT TRUE
+);
+
+-- Логирование действий администраторов
+CREATE TABLE Admin_Log (
+    Log_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Admin_ID INT,
+    Action VARCHAR(255) NOT NULL,
+    Details TEXT,
+    IP_Address VARCHAR(45),
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Admin_ID) REFERENCES Admin(Admin_ID)
+);
+
+-- Вставка тестовых данных для демонстрации
+INSERT INTO Student (Email, Password, Name, Surname) VALUES 
+('student1@test.com', '$2y$12$ZdOSu30.MUuVWBbnzjwxBuABKicW05EA8ddWJGSIGhBCfdX5IVLF.', 'John', 'Doe'),
+('student2@test.com', '$2y$12$ZdOSu30.MUuVWBbnzjwxBuABKicW05EA8ddWJGSIGhBCfdX5IVLF.', 'Jane', 'Smith');
+
+INSERT INTO Tutor (Email, Password, Name, Surname) VALUES 
+('tutor1@test.com', '$2y$12$ZdOSu30.MUuVWBbnzjwxBuABKicW05EA8ddWJGSIGhBCfdX5IVLF.', 'Dr. Michael', 'Johnson'),
+('tutor2@test.com', '$2y$12$ZdOSu30.MUuVWBbnzjwxBuABKicW05EA8ddWJGSIGhBCfdX5IVLF.', 'Prof. Sarah', 'Wilson');
+
+INSERT INTO Course (Course_name) VALUES 
+('Mathematics'),
+('Physics'),
+('Computer Science'),
+('English Literature');
+
+-- Создание первого администратора
+-- Email: admin@cae.com
+-- Password: admin123
+INSERT INTO Admin (Email, Password, Name, Surname, Role) VALUES 
+('admin@cae.com', '$2y$12$ZdOSu30.MUuVWBbnzjwxBuABKicW05EA8ddWJGSIGhBCfdX5IVLF.', 'System', 'Administrator', 'super_admin'); 

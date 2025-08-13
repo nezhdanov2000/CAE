@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CAE System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CAE Admin Dashboard</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="welcome-message">
+            <strong>Welcome to CAE Admin Panel!</strong><br>
+            This is your system administration dashboard. Here you can manage students, tutors, courses, and system settings.
+        </div>
+
+        <div class="admin-info">
+            <div class="admin-avatar" id="admin-avatar">A</div>
+            <div>
+                <div id="admin-name">Loading...</div>
+                <div style="font-size: 12px; color: #64748b;" id="admin-role">Administrator</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="students-count">0</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="tutors-count">0</div>
+                <div class="stat-label">Total Tutors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="courses-count">0</div>
+                <div class="stat-label">Active Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="appointments-count">0</div>
+                <div class="stat-label">Today's Appointments</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <p>Admin panel features will be added here:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>User Management</li>
+                <li>Course Management</li>
+                <li>Appointment Management</li>
+                <li>System Settings</li>
+                <li>Reports & Analytics</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Загружаем данные администратора
+        async function loadAdminData() {
+            try {
+                const response = await fetch('/CAE/backend/admin/get_admin_data.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('admin-name').textContent = data.admin.name;
+                    document.getElementById('admin-role').textContent = data.admin.role;
+                    document.getElementById('admin-avatar').textContent = data.admin.name.charAt(0).toUpperCase();
+                }
+            } catch (err) {
+                console.error('Error loading admin data:', err);
+            }
+        }
+
+        // Загружаем статистику
+        async function loadStats() {
+            try {
+                const response = await fetch('/CAE/backend/admin/get_stats.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('students-count').textContent = data.stats.students;
+                    document.getElementById('tutors-count').textContent = data.stats.tutors;
+                    document.getElementById('courses-count').textContent = data.stats.courses;
+                    document.getElementById('appointments-count').textContent = data.stats.appointments;
+                }
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        // Выход из системы
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/CAE/backend/admin/logout.php')
+                    .then(() => {
+                        window.location.href = 'login.html';
+                    })
+                    .catch(err => {
+                        console.error('Logout error:', err);
+                        window.location.href = 'login.html';
+                    });
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminData();
+            loadStats();
+        });
+    </script>
+</body>
+</html> 
