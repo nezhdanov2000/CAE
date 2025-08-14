@@ -11,61 +11,61 @@ $params = [];
 // Общая статистика системы
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Student');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_students'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_students'] = $row['count'];
 $stmt->close();
 
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Tutor');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_tutors'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_tutors'] = $row['count'];
 $stmt->close();
 
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Course');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_courses'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_courses'] = $row['count'];
 $stmt->close();
 
 // Статистика по таймслотам
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Timeslot');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_timeslots'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_timeslots'] = $row['count'];
 $stmt->close();
 
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Timeslot WHERE Date >= CURDATE()');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['future_timeslots'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['future_timeslots'] = $row['count'];
 $stmt->close();
 
 // Статистика по записям
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Appointment');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_appointments'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_appointments'] = $row['count'];
 $stmt->close();
 
 $stmt = $conn->prepare('SELECT COUNT(*) as count FROM Appointment a JOIN Timeslot t ON a.Timeslot_ID = t.Timeslot_ID WHERE DATE(t.Date) = CURDATE()');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['today_appointments'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['today_appointments'] = $row['count'];
 $stmt->close();
 
 // Статистика по группам
 $stmt = $conn->prepare('SELECT COUNT(DISTINCT Group_ID) as count FROM Student_Join');
 $stmt->execute();
-$stmt->bind_result($count);
-$stmt->fetch();
-$params['total_groups'] = $count;
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$params['total_groups'] = $row['count'];
 $stmt->close();
 
 // Последние действия администраторов

@@ -11,14 +11,14 @@ $admin_id = get_current_admin_id();
 $stmt = $conn->prepare('SELECT Name, Surname, Role FROM Admin WHERE Admin_ID = ?');
 $stmt->bind_param('i', $admin_id);
 $stmt->execute();
-$stmt->bind_result($name, $surname, $role);
-$stmt->fetch();
+$result = $stmt->get_result();
 
-if ($stmt->num_rows > 0) {
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
     send_json_success([
         'admin' => [
-            'name' => $name . ' ' . $surname,
-            'role' => ucfirst(str_replace('_', ' ', $role))
+            'name' => $row['Name'] . ' ' . $row['Surname'],
+            'role' => ucfirst(str_replace('_', ' ', $row['Role']))
         ]
     ]);
 } else {

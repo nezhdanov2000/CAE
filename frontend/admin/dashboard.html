@@ -118,14 +118,33 @@
 
         <div class="content-section">
             <h2 class="section-title">Quick Actions</h2>
-            <p>Admin panel features will be added here:</p>
-            <ul style="margin-left: 20px; margin-top: 10px;">
-                <li>User Management</li>
-                <li>Course Management</li>
-                <li>Appointment Management</li>
-                <li>System Settings</li>
-                <li>Reports & Analytics</li>
-            </ul>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+                <button class="action-card" onclick="window.location.href='user_management.html'">
+                    <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">User Management</div>
+                    <div style="font-size: 12px; color: #64748b;">Manage students, tutors, and administrators</div>
+                </button>
+                <button class="action-card" onclick="alert('Course Management - Coming Soon!')">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📚</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">Course Management</div>
+                    <div style="font-size: 12px; color: #64748b;">Manage courses and curriculum</div>
+                </button>
+                <button class="action-card" onclick="alert('Appointment Management - Coming Soon!')">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📅</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">Appointment Management</div>
+                    <div style="font-size: 12px; color: #64748b;">Manage appointments and schedules</div>
+                </button>
+                <button class="action-card" onclick="alert('System Settings - Coming Soon!')">
+                    <div style="font-size: 24px; margin-bottom: 8px;">⚙️</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">System Settings</div>
+                    <div style="font-size: 12px; color: #64748b;">Configure system parameters</div>
+                </button>
+                <button class="action-card" onclick="alert('Reports & Analytics - Coming Soon!')">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">Reports & Analytics</div>
+                    <div style="font-size: 12px; color: #64748b;">View detailed reports and analytics</div>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -133,13 +152,13 @@
         // Загружаем данные администратора
         async function loadAdminData() {
             try {
-                const response = await fetch('/CAE/backend/admin/get_admin_data.php');
+                const response = await fetch('/CAE/test_admin_data.php');
                 const data = await response.json();
                 
                 if (data.success) {
-                    document.getElementById('admin-name').textContent = data.admin.name;
-                    document.getElementById('admin-role').textContent = data.admin.role;
-                    document.getElementById('admin-avatar').textContent = data.admin.name.charAt(0).toUpperCase();
+                    document.getElementById('admin-name').textContent = data.data.admin.name;
+                    document.getElementById('admin-role').textContent = data.data.admin.role;
+                    document.getElementById('admin-avatar').textContent = data.data.admin.name.charAt(0).toUpperCase();
                 }
             } catch (err) {
                 console.error('Error loading admin data:', err);
@@ -149,14 +168,14 @@
         // Загружаем статистику
         async function loadStats() {
             try {
-                const response = await fetch('/CAE/backend/admin/get_stats.php');
+                const response = await fetch('/CAE/test_admin_data.php');
                 const data = await response.json();
                 
                 if (data.success) {
-                    document.getElementById('students-count').textContent = data.stats.students;
-                    document.getElementById('tutors-count').textContent = data.stats.tutors;
-                    document.getElementById('courses-count').textContent = data.stats.courses;
-                    document.getElementById('appointments-count').textContent = data.stats.appointments;
+                    document.getElementById('students-count').textContent = data.data.stats.students;
+                    document.getElementById('tutors-count').textContent = data.data.stats.tutors;
+                    document.getElementById('courses-count').textContent = data.data.stats.courses;
+                    document.getElementById('appointments-count').textContent = data.data.stats.appointments;
                 }
             } catch (err) {
                 console.error('Error loading stats:', err);
@@ -166,11 +185,11 @@
         // Загружаем параметры системы
         async function loadSystemParams() {
             try {
-                const response = await fetch('/CAE/backend/admin/get_system_params.php');
+                const response = await fetch('/CAE/test_admin_data.php');
                 const data = await response.json();
                 
                 if (data.success) {
-                    const params = data.params;
+                    const params = data.data.params;
                     
                     // Обновляем статистику базы данных
                     document.getElementById('total-students').textContent = params.total_students;
