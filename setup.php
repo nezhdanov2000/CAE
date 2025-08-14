@@ -41,6 +41,7 @@
         <a href="test_admin_data.php" class="btn">Тест API данных</a>
         <a href="frontend/admin/dashboard.html" class="btn">Открыть админ панель</a>
         <a href="frontend/admin/user_management.html" class="btn">Управление пользователями</a>
+        <a href="frontend/admin/course_management.html" class="btn">Управление курсами</a>
     </div>
     
     <div class="step info">
