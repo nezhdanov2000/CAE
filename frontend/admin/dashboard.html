@@ -152,7 +152,7 @@
         // Загружаем данные администратора
         async function loadAdminData() {
             try {
-                const response = await fetch('/CAE/test_admin_data.php');
+                const response = await fetch('/CAE/backend/admin/get_admin_data.php');
                 const data = await response.json();
                 
                 if (data.success) {
@@ -168,7 +168,7 @@
         // Загружаем статистику
         async function loadStats() {
             try {
-                const response = await fetch('/CAE/test_admin_data.php');
+                const response = await fetch('/CAE/backend/admin/get_stats.php');
                 const data = await response.json();
                 
                 if (data.success) {
@@ -185,7 +185,7 @@
         // Загружаем параметры системы
         async function loadSystemParams() {
             try {
-                const response = await fetch('/CAE/test_admin_data.php');
+                const response = await fetch('/CAE/backend/admin/get_system_params.php');
                 const data = await response.json();
                 
                 if (data.success) {

@@ -239,7 +239,7 @@
         // Load courses
         async function loadCourses() {
             try {
-                const response = await fetch('/CAE/test_course_management.php?action=get_courses');
+                const response = await fetch('/CAE/backend/admin/get_courses.php');
                 const data = await response.json();
                 
                 if (data.success) {
@@ -367,7 +367,7 @@
             }
             
             try {
-                const response = await fetch('/CAE/test_course_management.php?action=delete_course', {
+                const response = await fetch('/CAE/backend/admin/delete_course.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -398,7 +398,7 @@
             const courseData = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/CAE/test_course_management.php?action=add_course', {
+                const response = await fetch('/CAE/backend/admin/add_course.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -429,7 +429,7 @@
             const courseData = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/CAE/test_course_management.php?action=update_course', {
+                const response = await fetch('/CAE/backend/admin/update_course.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
